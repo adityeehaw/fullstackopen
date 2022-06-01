@@ -16,13 +16,13 @@ const Countrysearch = ({countries, searchName, setSearch}) => {
     const countryfilter = countries.filter(country => country.name.common.toLowerCase().includes(searchName.toLowerCase()))
 
 
-    if (searchName == ''){
+    if (searchName === ''){
         return ('')
       }
-    else if (countryfilter.length >= 10 && searchName != ''){
+    else if (countryfilter.length >= 10 && searchName !== ''){
         return (<p>Too Many matches</p>)
     }
-    else if (countryfilter.length > 1 &&  countryfilter.length < 10  && searchName != ''){
+    else if (countryfilter.length > 1 &&  countryfilter.length < 10  && searchName !== ''){
        return (countryfilter
          .map(country =>
             
@@ -31,7 +31,7 @@ const Countrysearch = ({countries, searchName, setSearch}) => {
             
        ))
      }
-    else if (countryfilter.length === 1 && searchName != ''){
+    else if (countryfilter.length === 1 && searchName !== ''){
         return(countryfilter
             .map(country => 
             <div key = {country.name.common}>

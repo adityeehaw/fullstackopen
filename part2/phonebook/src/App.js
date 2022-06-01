@@ -37,14 +37,14 @@ const App = () => {
           phonebookService
           .update(personToUpdate[0].id, nameList)
           .then(updated => {
-            setPersons(persons.map(person => person.id != personToUpdate[0].id ? person : updated))
+            setPersons(persons.map(person => person.id !== personToUpdate[0].id ? person : updated))
             setNewName('')
             setNewNumber('')
           })
           .catch(error => {
             setErrorMessage(`Information of ${newName} has already been removed from server`)
             setTimeout(() => {setErrorMessage(null)}, 5000)
-            setPersons(persons.filter(person => person.name != newName))
+            setPersons(persons.filter(person => person.name !== newName))
             setNewName('')
             setNewNumber('')
           })
@@ -70,6 +70,16 @@ const App = () => {
           setSuccessMessage(null)
         }, 5000)
       })
+      .catch(error => {
+        // console.log("error:",error)
+        // console.log('error.response:',error.response)
+        // console.log('error.response.data:',error.response.data)
+        setErrorMessage(error.response.data.error)
+        setTimeout(() => {setErrorMessage(null)}, 5000)
+        // setNewName('')
+        // setNewNumber('')
+      })
+      
       
     }
   }
@@ -79,7 +89,7 @@ const App = () => {
       phonebookService
       .remove(id)
       .then(response => {
-        setPersons(persons.filter(person => person.id != id))
+        setPersons(persons.filter(person => person.id !== id))
         setSuccessMessage(
           `${personToRemove[0].name} has been removed successfully`
         )
@@ -90,7 +100,7 @@ const App = () => {
       .catch(error => {
         setErrorMessage(`Information of ${personToRemove[0].name} has already been removed from server`)
         setTimeout(() => {setErrorMessage(null)}, 5000)
-        setPersons(persons.filter(person => person.id != id))
+        setPersons(persons.filter(person => person.id !== id))
       })
     }
   }
