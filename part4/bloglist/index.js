@@ -30,9 +30,9 @@ server.listen(config.PORT, () => {
 
 // const Blog = mongoose.model('Blog', blogSchema)
 
-// // mongodb+srv://mongolord:qazwsx12@cluster0.dim1i.mongodb.net/Bloglist?retryWrites=true&w=majority
+// // 
 
-// const mongoUrl = 'mongodb+srv://mongolord:qazwsx12@cluster0.dim1i.mongodb.net/Bloglist?retryWrites=true&w=majority'
+// const mongoUrl = ''
 // mongoose.connect(mongoUrl)
 
 // app.use(cors())
