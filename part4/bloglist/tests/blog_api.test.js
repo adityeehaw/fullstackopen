@@ -1,31 +1,14 @@
-const { get } = require('express/lib/response')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
+const blog = require('../models/blog')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const helper = require('./test_helper')
 
-const initialBlogs = [
-    {
-      title: 'Life is easy',
-      author: 'jack',
-      url: 'www.youtube.com',
-      likes: 23
-    },
-    {
-        title: 'Life is hard',
-        author: 'jacku',
-        url: 'www.bmw.com',
-        likes: 28
-    },
-  ]
-  
   beforeEach(async () => {
     await Blog.deleteMany({})
-    let blogObject = new Blog(initialBlogs[0])
-    await blogObject.save()
-    blogObject = new Blog(initialBlogs[1])
-    await blogObject.save()
+    await Blog.insertMany(helper.initialBlogs)
   },100000)
 
 test('blogs are returned as json', async () => {
@@ -37,7 +20,7 @@ test('blogs are returned as json', async () => {
 
 test('all blogs are returned', async() => {
   const response = await api.get('/api/blogs')
-  expect(response.body).toHaveLength(initialBlogs.length)
+  expect(response.body).toHaveLength(helper.initialBlogs.length)
 
 })
 
@@ -64,11 +47,11 @@ test('a valid blog can be added', async() => {
 
     const titles = response.body.map(r => r.title)
 
-    expect(response.body).toHaveLength(initialBlogs.length + 1)
+    expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
     expect(titles).toContain('iltutmish')
 })
 
-test('if likess property not present, default to zero', async () => {
+test('if likes property not present, default to zero', async () => {
     const newblog = {
         title: 'ibn Batuta',
         author: 'Ibn Batuta',
@@ -90,6 +73,37 @@ test('if title and url not present, send back 400 Bad request', async () => {
             .send(blog)
             .expect(400)
 })
+
+test('deletion of a note', async() => {
+    const blogsAtStart = await helper.blogsinDb()
+    const blogToDelete = blogsAtStart[0]
+
+    await api
+        .delete(`/api/blogs/${blogToDelete.id}`)
+        .expect(204)
+
+    const blogsAtEnd = await helper.blogsinDb()
+    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length - 1)
+
+    const titles = blogsAtEnd.map(r => r.title)
+
+    expect(titles).not.toContain(blogToDelete.title)
+})
+
+test('update likes on a blog', async() => {
+    const blogsAtStart = await helper.blogsinDb()
+    let blogToUpdate = blogsAtStart[0]
+    blogToUpdate.likes = 50
+
+    await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .send(blogToUpdate)
+        .expect(200)
+    
+    expect(blogToUpdate.likes).toBe(50)
+
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
