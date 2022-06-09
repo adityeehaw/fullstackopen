@@ -19,10 +19,15 @@ const App = () => {
   const [messageClass, setMessageClass] = useState('')
 
   useEffect(() => {
+    // const getblogs = () => {
+    //   const allblogs = blogService.getAll
+    //   return allblogs
+    // }
+    // setBlogs(getblogs())
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+      setBlogs(blogs.sort((a,b) =>  b.likes - a.likes)))
   }, [])
+
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -32,7 +37,6 @@ const App = () => {
       blogService.setToken(user.token)
     }
   },[])
-
 
 
   const loginForm = () => (

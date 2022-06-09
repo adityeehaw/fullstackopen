@@ -20,12 +20,13 @@ const Blog = ({blog}) => {
   const toggleVisibility = () => {
     setVisible(!visible)
   }
-  const likeCheck = async (blog) => {
-    const updatedblog = {likes: likes + 1}
-    console.log(blog.id)
+  const likeCheck = async() => {
+    console.log('send')
+    const updatedblog = {...blog,likes: likes + 1}
+    
     await blogService.update(updatedblog,blog.id)
-
     setLikes(likes + 1)
+    
   }
 
   return(
@@ -35,11 +36,10 @@ const Blog = ({blog}) => {
     </div>
 
     <div style={showWhenVisible}>
-      {likes}
       <p>Title: {blog.title} <button onClick={toggleVisibility}>hide</button></p>
       <p>Author: {blog.author}</p>
       <p>Url: {blog.url} </p>
-      <p>Likes: {blog.likes} <button onClick={likeCheck}>like</button></p>
+      <p>Likes: {likes} <button onClick={likeCheck}>like</button></p>
     </div>
     
   </div>  
