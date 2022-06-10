@@ -28,7 +28,7 @@ const App = () => {
       setBlogs(blogs.sort((a,b) =>  b.likes - a.likes)))
   }, [])
 
-
+  
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if(loggedUserJSON) {
@@ -81,7 +81,8 @@ const App = () => {
     //   author: Author,
     //   url: Url,
     // }
-    try {    const returnedBlog = await blogService.create(blogObject)
+    try {    
+    const returnedBlog = await blogService.create(blogObject)
     setBlogs(blogs.concat(returnedBlog))
     // setTitle('')
     // setAuthor('')
@@ -159,7 +160,7 @@ const App = () => {
       
       <br/>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} user={user} blogs={blogs} setBlogs={setBlogs}/>
       )}
     </div>
   )
