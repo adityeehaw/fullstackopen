@@ -18,7 +18,7 @@ const Blog = ({ blog, user, blogs, setBlogs }) => {
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
 
-  let removeAvailabilityCheck = { display: user.id === (blog.user.id || blog.user || 'no') ? '' : 'none' }
+  let removeAvailabilityCheck = { display: user.id === (blog.user?.id || blog.user || 'no') ? '' : 'none' }
 
   // const removeCalc = async () => {
   //   let style = 'none'
