@@ -28,7 +28,7 @@ const App = () => {
       setBlogs(blogs.sort((a,b) =>  b.likes - a.likes)))
   }, [])
 
-  
+
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if(loggedUserJSON) {
@@ -47,7 +47,7 @@ const App = () => {
           type= "text"
           value= {username}
           name= "Username"
-          onChange={({target}) => setUsername(target.value)}
+          onChange={({ target }) => setUsername(target.value)}
         />
       </div>
       <div>
@@ -81,32 +81,32 @@ const App = () => {
     //   author: Author,
     //   url: Url,
     // }
-    try {    
-    const returnedBlog = await blogService.create(blogObject)
-    setBlogs(blogs.concat(returnedBlog))
-    // setTitle('')
-    // setAuthor('')
-    // setUrl('')
-    setMessage(`a new blog '${blogObject.title}' by '${blogObject.author}' added`)
-    setMessageClass('success')
-    setTimeout(() => {
-      setMessage(null)
-      setMessageClass('')
-    },5000)
+    try {
+      const returnedBlog = await blogService.create(blogObject)
+      setBlogs(blogs.concat(returnedBlog))
+      // setTitle('')
+      // setAuthor('')
+      // setUrl('')
+      setMessage(`a new blog '${blogObject.title}' by '${blogObject.author}' added`)
+      setMessageClass('success')
+      setTimeout(() => {
+        setMessage(null)
+        setMessageClass('')
+      },5000)
     } catch(exception) {
-    setMessage(`${exception}`)
-    setMessageClass('error')
-    setTimeout(() => {
-      setMessage(null)
-      setMessageClass('')
-    },5000)
+      setMessage(`${exception}`)
+      setMessageClass('error')
+      setTimeout(() => {
+        setMessage(null)
+        setMessageClass('')
+      },5000)
     }
   }
   const logout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     setUser(null)
   }
-  
+
   const handleLogin = async (event) => {
     event.preventDefault()
 
@@ -153,11 +153,11 @@ const App = () => {
       <h2>blogs</h2>
       <Notification message={message} messageClass = {messageClass}/>
       <h3>{user.username} is Logged in <button onClick = {() => logout()}>logout</button></h3>
-      
+
       <Togglable buttonLabel = "create new blog">
-      <BlogForm createBlog={addBlog}/>
+        <BlogForm createBlog={addBlog}/>
       </Togglable>
-      
+
       <br/>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} user={user} blogs={blogs} setBlogs={setBlogs}/>
