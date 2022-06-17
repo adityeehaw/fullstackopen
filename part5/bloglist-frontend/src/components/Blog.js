@@ -3,8 +3,6 @@ import blogService from '../services/blogs'
 
 const Blog = ({ blog, user, blogs, setBlogs, likeUpdate }) => {
   const [visible, setVisible] = useState(false)
-  // const [likes, setLikes] = useState(blog.likes)
-  // const [removeButtonVisibility, setRemoveButtonVisibility] = useState('')
 
   const blogStyle = {
     paddingTop: 10,
@@ -20,24 +18,6 @@ const Blog = ({ blog, user, blogs, setBlogs, likeUpdate }) => {
 
   let removeAvailabilityCheck = { display: user.id === (blog.user?.id || blog.user || 'no') ? '' : 'none' }
 
-  // const removeCalc = async () => {
-  //   let style = 'none'
-
-  //   await blogService.getAll()
-  // this is added because the "remove" button was not visible for the blog that was just added,
-  //   // after reload the "remove" button was visible. This is because the blog that is returned from the post request does not have
-  //   // user-id at "blog.user.id", it gives the user-id at "blog.user". Where as on the blogs that we get from the database the
-  //   // user-id is at "blog.user.id".
-
-
-  //   if (user.id === (blog.user?.id || 'no')) {
-  //     style = ''
-  //   }else{
-  //     style = 'none'
-  //   }
-  //   return ({display : style})
-  // }
-
   const removeBlog = async () => {
     if (window.confirm(`Remove ${blog.title} by ${blog.author}`)) {
       const newBlogs = blogs.filter(b => b.id !== blog.id)
@@ -52,10 +32,6 @@ const Blog = ({ blog, user, blogs, setBlogs, likeUpdate }) => {
 
   const likeCheck = () => {
     const updatedblog = { ...blog,likes: blog.likes + 1 }
-
-    // await blogService.update(updatedblog,blog.id)
-
-    // setLikes(likes + 1)
 
     likeUpdate(updatedblog, blog.id)
   }

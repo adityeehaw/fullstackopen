@@ -26,7 +26,6 @@ describe('<Blog/>',  () => {
       id: 'id',
     }
 
-    // like = jest.fn()
     mockLike = jest.fn()
 
     container = render(

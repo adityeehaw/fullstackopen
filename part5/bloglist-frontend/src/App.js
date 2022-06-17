@@ -9,9 +9,6 @@ import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  // const [Title, setTitle] = useState('')
-  // const [Author, setAuthor] = useState('')
-  // const [Url, setUrl] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -19,11 +16,6 @@ const App = () => {
   const [messageClass, setMessageClass] = useState('')
 
   useEffect(() => {
-    // const getblogs = () => {
-    //   const allblogs = blogService.getAll
-    //   return allblogs
-    // }
-    // setBlogs(getblogs())
     blogService.getAll().then(blogs =>
       setBlogs(blogs.sort((a,b) =>  b.likes - a.likes)))
   }, [])
@@ -68,30 +60,10 @@ const App = () => {
     </form>
   )
 
-  // const BlogForm = () => (
-  //   <form onSubmit={addBlog}>
-  //     <br/>
-  //     <div>Title:<input value = {Title} onChange={({ target }) => setTitle(target.value)}/></div>
-  //     <div>Author:<input value = {Author} onChange = {({ target }) => setAuthor(target.value)}/></div>
-  //     <div>Url:<input value = {Url} onChange = {({ target }) => setUrl(target.value)}/></div>
-  //     <br/>
-  //     <button type="submit">create</button>
-  //   </form>
-  // )
-
   const addBlog = async (blogObject) => {
-    // event.preventDefault()
-    // const blogObject = {
-    //   title: Title,
-    //   author: Author,
-    //   url: Url,
-    // }
     try {
       const returnedBlog = await blogService.create(blogObject)
       setBlogs(blogs.concat(returnedBlog))
-      // setTitle('')
-      // setAuthor('')
-      // setUrl('')
       setMessage(`a new blog '${blogObject.title}' by '${blogObject.author}' added`)
       setMessageClass('success')
       setTimeout(() => {
