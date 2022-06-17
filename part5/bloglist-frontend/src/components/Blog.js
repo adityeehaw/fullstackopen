@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, user, blogs, setBlogs }) => {
+const Blog = ({ blog, user, blogs, setBlogs, likeUpdate }) => {
   const [visible, setVisible] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
+  // const [likes, setLikes] = useState(blog.likes)
   // const [removeButtonVisibility, setRemoveButtonVisibility] = useState('')
 
   const blogStyle = {
@@ -50,12 +50,14 @@ const Blog = ({ blog, user, blogs, setBlogs }) => {
     setVisible(!visible)
   }
 
-  const likeCheck = async() => {
-    console.log('send')
-    const updatedblog = { ...blog,likes: likes + 1 }
-    setLikes(likes + 1)
+  const likeCheck = () => {
+    const updatedblog = { ...blog,likes: blog.likes + 1 }
 
-    await blogService.update(updatedblog,blog.id)
+    // await blogService.update(updatedblog,blog.id)
+
+    // setLikes(likes + 1)
+
+    likeUpdate(updatedblog, blog.id)
   }
 
 
@@ -69,7 +71,7 @@ const Blog = ({ blog, user, blogs, setBlogs }) => {
       <div style={showWhenVisible} className="urlLikes">
         <p>Title: {blog.title} <button onClick={toggleVisibility}>hide</button></p>
         <p>Url: {blog.url} </p>
-        <p>Likes: {likes} <button onClick={likeCheck}>like</button></p>
+        <p>Likes: {blog.likes} <button onClick={likeCheck}>like</button></p>
         <p>Author: {blog.author} <button style={removeAvailabilityCheck} onClick={removeBlog}>remove</button></p>
       </div>
 
