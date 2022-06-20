@@ -1,3 +1,4 @@
+
 describe('Blog app', function() {
   beforeEach(function() {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
@@ -45,18 +46,19 @@ describe('Blog app', function() {
   describe('When logged in', function() {
     beforeEach(function() {
 
+      cy.login({ username: 'newuser', password: 'user' })
+
       // cy.get('#username').type('newuser')
       // cy.get('#password').type('user')
       // cy.get('#login-button').click()
 
-      cy.request('POST', 'http://localhost:3003/api/login', {
-        username: 'newuser',
-        password: 'user'
-      }).then(({ body }) => {
-        localStorage.setItem('loggedBlogappUser', JSON.stringify(body))
-        cy.visit('http://localhost:3000')
-      })
-
+      // cy.request('POST', 'http://localhost:3003/api/login', {
+      //   username: 'newuser',
+      //   password: 'user'
+      // }).then(({ body }) => {
+      //   localStorage.setItem('loggedBlogappUser', JSON.stringify(body))
+      //   cy.visit('http://localhost:3000')
+      // })
     })
 
     it('A blog can be created', function() {
@@ -68,7 +70,7 @@ describe('Blog app', function() {
 
       cy.contains('Extreme Title')
       cy.contains('Extreme Author')
-      cy.get('.brog').should('have.length', 1)
+      cy.get('.blog').should('have.length', 1)
     })
 
     it('Blog can be liked', function() {
@@ -94,21 +96,43 @@ describe('Blog app', function() {
       cy.get('html').should('not.contain', 'Extreme Url')
     })
 
-    it('Other user cannot remove post', function() {
-      cy.get('#create-new-blog').click()
-      cy.get('#title').type('Extreme Title')
-      cy.get('#author').type('Extreme Author')
-      cy.get('#url').type('Extreme Url')
-      cy.get('#create').click()
-      cy.contains('logout').click()
+    // it('Other user cannot remove post', function() {
+    //   cy.get('#create-new-blog').click()
+    //   cy.get('#title').type('Extreme Title')
+    //   cy.get('#author').type('Extreme Author')
+    //   cy.get('#url').type('Extreme Url')
+    //   cy.get('#create').click()
+    //   cy.contains('logout').click()
 
-      cy.get('#username').type('seconduser')
-      cy.get('#password').type('user2')
-      cy.get('#login-button').click()
+    //   // cy.get('#username').type('seconduser')
+    //   // cy.get('#password').type('user2')
+    //   // cy.get('#login-button').click()
 
-      cy.contains('View').click()
-      cy.get('html').should('not.contain', '#remove')
-    })
+    //   cy.login({ username: 'seconduser', password: 'user2' })
 
+    //   cy.contains('View').click()
+    //   cy.get('html').should('not.contain', '#remove')
+    // })
+  })
+  it('other users cannot remove post', function(){
+    cy.login({ username: 'newuser', password: 'user' })
+    cy.Blog({ title: 'some', author: 'somebody', url: 'anyone', likes: '61' })
+    cy.contains('logout').click()
+    cy.login({ username: 'seconduser', password: 'user2' })
+    cy.contains('View').click()
+    cy.get('html').should('not.contain', '#remove')
+  })
+
+  it('blogs in a sorted order', function() {
+    cy.login({ username: 'newuser', password: 'user' })
+    cy.Blog({ title: 'some', author: 'somebody', url: 'anyone', likes: '61' })
+    cy.Blog({ title: 'body', author: 'anybody', url: 'anyone', likes: '10' })
+    cy.Blog({ title: 'once', author: 'everybody', url: 'anyone', likes: '26' })
+    cy.Blog({ title: 'told', author: 'nobody', url: 'anyone', likes: '87' })
+
+    cy.get('.blog').eq(0).should('contain', 'told')
+    cy.get('.blog').eq(1).should('contain', 'some')
+    cy.get('.blog').eq(2).should('contain', 'once')
+    cy.get('.blog').eq(3).should('contain', 'body')
   })
 })
