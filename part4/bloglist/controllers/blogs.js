@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 
 
 blogsRouter.get('/', async (request, response) => {
-  const allBlogs = await Blog.find({}).populate('user',{username: 1})
+  const allBlogs = await Blog.find({}).populate('user',{id: 1})
   response.json(allBlogs)
 })
 
@@ -55,23 +55,23 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request,response) =>
 
 })
 
-blogsRouter.put('/:id', middleware.userExtractor, async (request,response) => {
+blogsRouter.put('/:id', async (request,response) => {
   const body = request.body
 
   const blog = {
     likes: body.likes
   }
 
-  const user = request.user
+  // const user = request.user
 
-  blogToUpdate = await Blog.findById(request.params.id)
+  // blogToUpdate = await Blog.findById(request.params.id)
 
-  if(user.id.toString() === blogToUpdate.user.toString()) {
+  // if(user.id.toString() === blogToUpdate.user.toString()) {
     const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {new: true})
     response.status(204).json(updatedBlog)
-  } else {
-    response.status(401).json({ error: 'not authorized to update this blog'})
-  }
+  // } else {
+  //   response.status(401).json({ error: 'not authorized to update this blog'})
+  // }
 
 
   // const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {new: true})

@@ -146,30 +146,30 @@ test('deletion of a note with correct token', async() => {
     expect(titles).not.toContain(blogToDelete.title)
 })
 
-test('update likes on a blog with a correct token', async() => {
+test('update likes on a blog', async() => {
 
-    const newblog = {
-        title: 'ibn Batuta',
-        author: 'Ibn Batuta',
-        url: 'www.youtube.com',
-        likes: 40
-    }
+    // const newblog = {
+    //     title: 'ibn Batuta',
+    //     author: 'Ibn Batuta',
+    //     url: 'www.youtube.com',
+    //     likes: 40
+    // }
 
-    const logintoken = await api.post('/api/login').send(newUser)
+    // const logintoken = await api.post('/api/login').send(newUser)
 
-    const response = await api
-                        .post('/api/blogs')
-                        .set('authorization', `bearer ${logintoken.body.token}`)
-                        .send(newblog)
-                        .expect(201)
+    // const response = await api
+    //                     .post('/api/blogs')
+    //                     // .set('authorization', `bearer ${logintoken.body.token}`)
+    //                     .send(newblog)
+    //                     .expect(201)
 
     const blogsAtStart = await helper.blogsinDb()
-    let blogToUpdate = blogsAtStart[blogsAtStart.length - 1]
+    let blogToUpdate = blogsAtStart[0]
     blogToUpdate.likes = 50
 
     await api
         .put(`/api/blogs/${blogToUpdate.id}`)
-        .set('authorization',`bearer ${logintoken.body.token}`)
+        // .set('authorization',`bearer ${logintoken.body.token}`)
         .send(blogToUpdate)
         .expect(204)
     
