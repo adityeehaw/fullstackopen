@@ -7,11 +7,11 @@ const AnecdoteList = () => {
     
     const anecdotes = useSelector(state => state.anecdotes.filter(a => a.content.includes(state.filter)))
 
-
     const vote = (id) => {
         dispatch(makeVote(id))
         const anecdote = anecdotes.find(a => a.id === id)
         dispatch(setNotification(`you voted '${anecdote.content}'`, 5))
+        
     }
 
     return (
